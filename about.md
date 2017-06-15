@@ -8,7 +8,7 @@ Hey guys, I'm Le Dien Phuc, a student at UIT in HCM city, Vietnam
 
 ### More Information
 
-Love programming, indie songs, and film.
+Love programming, indie songs, and Superhero, Comedy, science films.
 
 ### Contact me
 
