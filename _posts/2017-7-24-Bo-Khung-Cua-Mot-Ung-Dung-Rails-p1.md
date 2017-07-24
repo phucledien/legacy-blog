@@ -2,7 +2,7 @@
 layout: post
 title: "Bộ khung của một ứng dụng Rails, phần 1: Views"
 ---
-Ruby on Rails là một framework giúp cho các developer xây dựng hệ thống database phía back-end cho web-app của họ một cách nhanh chóng. Một trong những lý do khiến tôi thích ở Rails chính là khả năng hiển thị những thông tin back-end một cách dễ dàng. Chúng ta sẽ bắt đầu thực hiện việc này theo cách của Rails. Những phần thông tin được hiển thị ta sẽ gọi là "views", và hầu hết những phần này được viết bằng HTML và một chút Ruby. Rails cho chúng ta sử dụng ngôn ngữ Ruby để tăng thêm sự linh hoạt trong việc hiển thị views.
+Ruby on Rails là một framework giúp cho các developer xây dựng hệ thống database phía back-end cho web-app của họ một cách nhanh chóng. Một trong những lý do khiến tôi thích ở Rails chính là khả năng hiển thị những thông tin back-end một cách dễ dàng. Chúng ta sẽ cùng bắt đầu thực hiện việc này theo cách của Rails. Những phần thông tin được hiển thị trên app ta sẽ gọi là "views", và hầu hết những phần này được viết bằng HTML pha trộn thêm một chút Ruby code. Rails cho chúng ta sử dụng ngôn ngữ Ruby để tăng thêm sự linh hoạt trong việc hiển thị views.
 
 ![Powerup page](../images/powerup_page.png)
 <!-- more -->
