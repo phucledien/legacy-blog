@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-24T12:39:19+07:00</updated><id>http://localhost:4000/</id><title type="html">Lê Điền Phúc (Dasuperm[A]n)</title><subtitle>Em ăn sáng chưa?</subtitle><entry><title type="html">Bộ khung của một ứng dụng Rails, phần 1: Views</title><link href="http://localhost:4000/Bo-Khung-Cua-Mot-Ung-Dung-Rails-p1/" rel="alternate" type="text/html" title="Bộ khung của một ứng dụng Rails, phần 1: Views" /><published>2017-07-24T00:00:00+07:00</published><updated>2017-07-24T00:00:00+07:00</updated><id>http://localhost:4000/Bo-Khung-Cua-Mot-Ung-Dung-Rails-p1</id><content type="html" xml:base="http://localhost:4000/Bo-Khung-Cua-Mot-Ung-Dung-Rails-p1/">&lt;p&gt;Ruby on Rails là một framework giúp cho các developers xây dựng hệ thống database phía back-end cho web-app của họ một cách nhanh chóng. Một trong những lý do khiến tôi thích ở Rails chính là khả năng hiển thị những thông tin back-end một cách dễ dàng. Chúng ta sẽ bắt đầu thực hiện việc này theo cách của Rails. Những phần thông tin được hiển thị ta sẽ gọi là “views”, và hầu hết những phần này được viết bằng HTML và một chút Ruby. Rails cho chúng ta sử dụng ngôn ngữ Ruby để tăng thêm sự linh hoạt trong việc hiển thị views.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/powerup_page.png&quot; alt=&quot;Powerup page&quot; /&gt;
+&lt;!-- more --&gt;
+PowerUp là một ứng dụng cho phép người dùng lưu lại quá trình workout của họ (logging). Phần “views” của ứng dụng PowerUp cần phải đáp ứng các chức năng như sau:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Tạo tài khoản mới qua một form đăng ký&lt;/li&gt;
+  &lt;li&gt;Đăng nhập tài khoản vào ứng dụng&lt;/li&gt;
+  &lt;li&gt;Chỉnh sửa thông tin cá nhân&lt;/li&gt;
+  &lt;li&gt;Tạo một workout log mới&lt;/li&gt;
+  &lt;li&gt;Chỉnh sửa chi tiết một workout log nào đó.&lt;/li&gt;
+  &lt;li&gt;Xóa một workout từ danh sách workout của người dùng&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Để cho các views của chúng ta hiển thị một cách chính xác trên trình duyệt thì các dòng code HTML cần phải được format một cách đúng đắn. Rails sẽ giải quyết cho chúng ta về vấn đề này bằng một thứ gọi là “default page layout”, đây là cách để sắp xếp các views của chúng ta trong app. Mặc định file này sẽ nằm trong đường dẫn &lt;code class=&quot;highlighter-rouge&quot;&gt;/app_name/app/views/layouts/application.html.erb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;  
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;PowerUp&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' =&amp;gt; true %&amp;gt;
+            &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= javascript_include_tag 'application', 'data-turbolinks-track' =&amp;gt; true %&amp;gt;
+            &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= csrf_meta_tags %&amp;gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= yield %&amp;gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;    
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;File &lt;code class=&quot;highlighter-rouge&quot;&gt;application.html.erb&lt;/code&gt; này sẽ cung cấp cho chúng ta tất cả các tag cơ bản như doctype, html, head, body mà không cần chúng ta tùy chỉnh thêm gì cả. Đây là một trong những lợi ích trong việc phát triển app với Rails. Trong file này, &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;%= yield %&amp;gt;&lt;/code&gt; tag được gọi là một dấu trang (placeholder). Rails sẽ bỏ tất cả các view cần thiết vào thay thế chỗ đó. Ví dụ, nếu views của chúng ta có các dòng code sau:&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;This is an example page&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;  
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;I'll show up in place of the yield tag, just watch&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Trình duyệt sẽ hiển thị như sau:&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;  
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;PowerUp&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' =&amp;gt; true %&amp;gt;
+          &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= javascript_include_tag 'application', 'data-turbolinks-track' =&amp;gt; true %&amp;gt;
+          &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= csrf_meta_tags %&amp;gt;
+
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;This is an example page&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;I show up in place of the yield tag, just watch&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Đây là một ví dụ cơ bản nhất trong việc Rails giúp giữ cho code của chúng ta được “DRY” (Don’t Repeat Yourself). yield tag sẽ chỉ chèn vào những gì thật sự thay đổi trong file HTML, điều này sẽ giúp chúng ta không cần phải viết lại những cái tag lặp lại từ trang này qua trang khác.&lt;/p&gt;
+
+&lt;p&gt;Một công cụ khác giúp cho các developer viết code được “DRY” hơn chính là “partials”. Các bạn có thể xem “partials” như là một đoạn code, có thể được gọi lại nhiều lần ở bất kỳ chỗ nào trong ứng dụng của chúng ta khi cần thiết. Trong PowerUp, các form được dùng cho việc tạo một workout log mới hay chỉnh sửa một log cũ thì đều giống nhau. Do đó để tránh việc tạo lại phần form này chúng ta sẽ sử dụng partial. Để sử dụng partial, chúng ta chỉ việc tạo một file mới và lưu nó lại với tên là &lt;code class=&quot;highlighter-rouge&quot;&gt;_form.html.erb&lt;/code&gt; trong thư mục &lt;code class=&quot;highlighter-rouge&quot;&gt;views/workouts&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Sau đó, chúng ta có thể gọi nó ở trong file new workout, thêm một chút style với Bootstrap:&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;col-sm-4 col-sm-offset-4&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;  
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Edit&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= render &quot;workouts/form&quot; %&amp;gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Hãy để ý đến cách mà hàm render sử dụng &lt;code class=&quot;highlighter-rouge&quot;&gt;form&lt;/code&gt; partial từ thư mục &lt;code class=&quot;highlighter-rouge&quot;&gt;workouts&lt;/code&gt;. Việc chúng ta lưu file partial ở đâu khá quan trọng. Vì có thể trong tương lai, chúng ta sẽ tạo thêm nhiều form partial cho các mục khác chứ không riêng gì &lt;code class=&quot;highlighter-rouge&quot;&gt;workouts&lt;/code&gt;, do đó, chúng ta cần phải chỉ rõ thư mục chứa partial mà chúng ta cần sử dụng.&lt;/p&gt;
+
+&lt;p&gt;Việc giữ cho code “DRY” hơn khá là tuyệt vời, nhưng nếu như chúng ta cũng muốn code chúng ta thông minh hơn thì phải làm thế nào? Giả sử như tôi muồn cung cấp cho người dùng đường dẫn đến trang profile của họ và cả chức năng đăng xuất, nhưng chỉ khi họ đã đăng nhập? Rails cho phép chúng ta làm điều đó một cách cực kì dễ dàng bằng cách chèn thêm các dòng code Ruby vào phần “views” của chúng ta.&lt;/p&gt;
+
+&lt;p&gt;Đầu tiên là thanh navbar với các link khi người dùng chưa đăng nhập&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/powerup_notloggedin.png&quot; alt=&quot;not logged in&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Đây là phần code views cho hình trên&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= link_to &quot;Log In&quot;, new_session_path %&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;  
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= link_to &quot;Sign Up&quot;, new_user_path %&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Khi người dùng chưa đăng nhập thì có vẻ đoạn code trên đã hoàn thành nhiệm vụ, tuy nhiên những links này sẽ không có ích gì khi người dùng đã đăng nhập vào hệ thống. Khi họ đã đăng nhập, chúng ta muốn người dùng có thể truy cập vào các link như sau:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/powerup_loggedin.png&quot; alt=&quot;logged in&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Với việc Rails cho phép chúng ta chèn những đoạn code Ruby vào phần “views” thì có lẽ công việc này quá đễ dàng. Chúng ta chỉ cần thêm những đoạn if-else đơn giản để kiểm tra xem người dùng có đang đăng nhập hay không và đưa ra đường link thích hợp cho họ.&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;% if logged_in? %&amp;gt;  
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;active&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= link_to &quot;Welcome, #{current_user.name}!&quot;, user_path(current_user) %&amp;gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= link_to &quot;Profile&quot;, user_path(current_user) %&amp;gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= link_to 'Log Out', logout_path, method: :delete %&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;% else %&amp;gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= link_to &quot;Log In&quot;, new_session_path %&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%= link_to &quot;Sign Up&quot;, new_user_path %&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;% end %&amp;gt;  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Bây giờ, các đường link trên navbar của chúng ta sẽ thay đổi dựa theo trạng thái của user. Chúng ta có thể ứng dụng việc này vào rất nhiều tình huống như là đưa ra các thông báo lỗi, đếm các lượt vote/comment, cũng như cung cấp các chức năng khác nhau tùy theo loại tài khoản.&lt;/p&gt;
+
+&lt;p&gt;Nhờ có Rails, công việc của developers đã dễ thở hơn rất nhiều. Yield tag, partials, và việc chèn code Ruby trực tiếp vào phần views là những công cụ cơ bản giúp cho các developer có thể xây dựng được các “Views” hữu ích và hấp dẫn hơn cho ứng dụng của mình. Các bạn hãy thử áp dụng những kỹ thuật này vào app kế tiếp thử xem nhé.&lt;/p&gt;</content><author><name></name></author><summary type="html">Ruby on Rails là một framework giúp cho các developers xây dựng hệ thống database phía back-end cho web-app của họ một cách nhanh chóng. Một trong những lý do khiến tôi thích ở Rails chính là khả năng hiển thị những thông tin back-end một cách dễ dàng. Chúng ta sẽ bắt đầu thực hiện việc này theo cách của Rails. Những phần thông tin được hiển thị ta sẽ gọi là “views”, và hầu hết những phần này được viết bằng HTML và một chút Ruby. Rails cho chúng ta sử dụng ngôn ngữ Ruby để tăng thêm sự linh hoạt trong việc hiển thị views.</summary></entry><entry><title type="html">Playlist deep của tôi</title><link href="http://localhost:4000/My-Soundcloud-Playlist/" rel="alternate" type="text/html" title="Playlist deep của tôi" /><published>2017-06-18T00:00:00+07:00</published><updated>2017-06-18T00:00:00+07:00</updated><id>http://localhost:4000/My-Soundcloud-Playlist</id><content type="html" xml:base="http://localhost:4000/My-Soundcloud-Playlist/">&lt;p&gt;Một trong những sức mạnh phi thường của âm nhạc đó là lưu giữ ký ức. Bạn có thể nghe một bài hát và có lại được toàn bộ những cảm xúc, hình ảnh về một kỉ niệm nào đó đặc biệt trong cuộc đời: thời đi học, mùa yêu, những ngày dọn tới ở một căn nhà mới, hay dạo chơi ở một thành phố lạ. Đó là một sức mạnh vô hình, nhưng lại có giá trị tinh thần vô cùng lớn. Nghe lại một vài ca khúc gắn bó với mình trong một khoảng thời gian nhất định cũng giống như gặp lại một người từng quen hay xem lại một tấm ảnh xưa cũ. Cảm giác đó như thế nào, mỗi chúng ta đều hiểu.&lt;/p&gt;
+
+&lt;p&gt;TP.HCM, ngày 18 tháng 6 năm 2017, anh nhớ em! :)&lt;/p&gt;
+
+&lt;iframe width=&quot;100%&quot; height=&quot;450&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/273913056&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&amp;amp;visual=true&quot;&gt;&lt;/iframe&gt;</content><author><name></name></author><summary type="html">Một trong những sức mạnh phi thường của âm nhạc đó là lưu giữ ký ức. Bạn có thể nghe một bài hát và có lại được toàn bộ những cảm xúc, hình ảnh về một kỉ niệm nào đó đặc biệt trong cuộc đời: thời đi học, mùa yêu, những ngày dọn tới ở một căn nhà mới, hay dạo chơi ở một thành phố lạ. Đó là một sức mạnh vô hình, nhưng lại có giá trị tinh thần vô cùng lớn. Nghe lại một vài ca khúc gắn bó với mình trong một khoảng thời gian nhất định cũng giống như gặp lại một người từng quen hay xem lại một tấm ảnh xưa cũ. Cảm giác đó như thế nào, mỗi chúng ta đều hiểu. TP.HCM, ngày 18 tháng 6 năm 2017, anh nhớ em! :)</summary></entry></feed>
