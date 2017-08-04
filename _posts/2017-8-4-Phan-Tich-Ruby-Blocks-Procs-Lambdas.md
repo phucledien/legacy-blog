@@ -2,7 +2,7 @@
 layout: post
 title: "Phân tích Ruby: Blocks, Procs, Lambdas hay còn gọi là \"Closures\""
 ---
-*Bài viết sau sẽ giải thích cặn kẽ các khái niệm quen thuộc về closures trong Ruby như BLocks và Procs, cũng như các khái niệm ít được nhắc đến như Lambdas và Methods.*
+*Bài viết sau sẽ giải thích cặn kẽ các khái niệm quen thuộc về closures trong Ruby như Blocks và Procs, cũng như các khái niệm ít được nhắc đến như Lambdas và Methods.*
 
 ## Blocks
 
